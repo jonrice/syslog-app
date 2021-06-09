@@ -1,0 +1,2088 @@
+security {
+    idp {
+        idp-policy Server-Protection {
+            /* This template policy is designed to protect servers.  It is supported on devices with 2G or more of memory.  Branch devices with only 1G are not supported. */
+            rulebase-ips {
+                rule Web-Services-Essential {
+                    /* This rule is designed to protect your servers against common internet attacks.  It includes Critical and Major severities.  This is an essential rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]HTTP - Critical" "[Recommended]HTTP - Major" "[Recommended]SSL - Critical" "[Recommended]SSL - Major" "[Recommended]DNS - Critical" "[Recommended]DNS - Major" "[Recommended]FTP - Critical" "[Recommended]FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Web-Services-Supplemental {
+                    /* This rule is designed to protect your servers against common internet attacks.  It includes Minor, Warning, and Info severities.  If you experience low IDP performance, you may remove the lower-severity groups from your policy for a small increase in performance, at the cost of security. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]HTTP - Minor" "[Recommended]HTTP - Warning" "[Recommended]HTTP - Info" "[Recommended]SSL - Minor" "[Recommended]SSL - Warning" "[Recommended]SSL - Info" "[Recommended]DNS - Minor" "[Recommended]DNS - Warning" "[Recommended]DNS - Info" "[Recommended]FTP - Minor" "[Recommended]FTP - Warning" "[Recommended]FTP - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Mail-Services {
+                    /* This rule is designed to protect your servers against common mail attacks.  If you experience low IDP performance, you may remove the lower-severity groups from your policy for a small increase in performance, at the cost of security. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IMAP - Critical" "[Recommended]IMAP - Major" "[Recommended]IMAP - Minor" "[Recommended]IMAP - Warning" "[Recommended]IMAP - Info" "[Recommended]POP3 - Critical" "[Recommended]POP3 - Major" "[Recommended]POP3 - Minor" "[Recommended]POP3 - Warning" "[Recommended]POP3 - Info" "[Recommended]SMTP - Critical" "[Recommended]SMTP - Major" "[Recommended]SMTP - Minor" "[Recommended]SMTP - Warning" "[Recommended]SMTP - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Internal-Services {
+                    /* This rule is designed to protect your servers against common internal attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SMB" "[Recommended]MS-RPC" "[Recommended]LDAP" "[Recommended]NETBIOS" "[Recommended]RADIUS" "[Recommended]SSH" "[Recommended]TELNET" "[Recommended]DB" "[Recommended]VNC" "[Recommended]NFS" "[Recommended]NTP" "[Recommended]PORTMAPPER" "[Recommended]DHCP" "[Recommended]RPC" "[Recommended]SNMP" "[Recommended]SNMPTRAP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Malicious-Activity {
+                    /* This rule is designed to protect your servers against common malware attacks and other malicious activity.  This is a very important rule and should be kept enabled. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SPYWARE" "[Recommended]TROJAN" "[Recommended]VIRUS" "[Recommended]WORM" "[Recommended]SHELLCODE" "[Recommended]SCAN" "[Recommended]DOS" "[Recommended]DDOS" "[Recommended]Misc_SPYWARE" "[Recommended]Misc_TROJAN" "[Recommended]Misc_VIRUS" "[Recommended]Misc_WORM" "[Recommended]Misc_SHELLCODE" "[Recommended]Misc_SCAN" "[Recommended]Misc_DOS" "[Recommended]Misc_DDOS" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Other-Activity {
+                    /* This rule is designed to protect your servers against other common attacks.  This rule is useful if your organization is concerned about chat, P2P, and similar activity.  If not, this rule can be disabled or removed from your policy. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]VOIP" "[Recommended]CHAT" "[Recommended]P2P" "[Recommended]APP" "[Recommended]RTSP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Transport-Services {
+                    /* This rule is designed to protect your servers against common transport attacks.  Triggers against this rule could indicate an attacker is attempting to evade your IDP.  Unusual network configurations can also sometimes trigger attacks in this rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IP" "[Recommended]TCP" "[Recommended]UDP" "[Recommended]ICMP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy Server-Protection-1G {
+            /* This template policy is designed to protect servers.  This template is supported on all platforms, including Branch devices with 1G of memory. */
+            rulebase-ips {
+                rule Web-Services-Essential {
+                    /* This rule is designed to protect your servers against common internet attacks.  It includes Critical and Major severities.  This is an essential rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]HTTP - Critical" "[Recommended]HTTP - Major" "[Recommended]SSL - Critical" "[Recommended]SSL - Major" "[Recommended]DNS - Critical" "[Recommended]DNS - Major" "[Recommended]FTP - Critical" "[Recommended]FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Mail-Services {
+                    /* This rule is designed to protect your servers against common mail attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IMAP - Critical" "[Recommended]IMAP - Major" "[Recommended]POP3 - Critical" "[Recommended]POP3 - Major" "[Recommended]SMTP - Critical" "[Recommended]SMTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Internal-Services {
+                    /* This rule is designed to protect your servers against common internal attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SMB - Critical" "[Recommended]SMB - Major" "[Recommended]MS-RPC - Critical" "[Recommended]MS-RPC - Major" "[Recommended]NETBIOS - Critical" "[Recommended]NETBIOS - Major" "[Recommended]SSH - Critical" "[Recommended]SSH - Major" "[Recommended]DB - Critical" "[Recommended]DB - Major" "[Recommended]NTP - Critical" "[Recommended]NTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Malicious-Activity {
+                    /* This rule is designed to protect your servers against common malware attacks and other malicious activity.  This is a very important rule and should be kept enabled. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SPYWARE - Critical" "[Recommended]SPYWARE - Major" "[Recommended]TROJAN - Critical" "[Recommended]TROJAN - Major" "[Recommended]VIRUS - Critical" "[Recommended]VIRUS - Major" "[Recommended]WORM - Critical" "[Recommended]WORM - Major" "[Recommended]Misc_SPYWARE - Critical" "[Recommended]Misc_SPYWARE - Major" "[Recommended]Misc_TROJAN - Critical" "[Recommended]Misc_TROJAN - Major" "[Recommended]Misc_VIRUS - Critical" "[Recommended]Misc_VIRUS - Major" "[Recommended]Misc_WORM - Critical" 
+                            "[Recommended]Misc_WORM - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Transport-Services {
+                    /* This rule is designed to protect your servers against common transport attacks.  Triggers against this rule could indicate an attacker is attempting to evade your IDP.  Unusual network configurations can also sometimes trigger attacks in this rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IP" "[Recommended]TCP" "[Recommended]UDP" "[Recommended]ICMP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy Client-Protection {
+            /* This template policy is designed to protect clients.  It is supported on devices with 2G or more of memory.  Branch devices with only 1G are not supported. */
+            rulebase-ips {
+                rule Web-Services-Essential {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes Critical and Major severities.  This is an essential rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_HTTP - Critical" "[Recommended]Response_HTTP - Major" "[Recommended]Response_SSL - Critical" "[Recommended]Response_SSL - Major" "[Recommended]Response_DNS - Critical" "[Recommended]Response_DNS - Major" "[Recommended]Response_FTP - Critical" "[Recommended]Response_FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Web-Services-Supplemental {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes Minor, Warning, and Info severities.  If IDP performance is low, this rule can be disabled to improve performance at the cost of security.  Alternatively, you may remove the lower-severity groups from your policy for a small increase in performance, with a lower cost of security impact. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_HTTP - Minor" "[Recommended]Response_HTTP - Warning" "[Recommended]Response_HTTP - Info" "[Recommended]Response_SSL - Minor" "[Recommended]Response_SSL - Warning" "[Recommended]Response_SSL - Info" "[Recommended]Response_DNS - Minor" "[Recommended]Response_DNS - Warning" "[Recommended]Response_DNS - Info" "[Recommended]Response_FTP - Minor" "[Recommended]Response_FTP - Warning" "[Recommended]Response_FTP - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Web-Services-Low-Performance {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes performance-impacting signatures.  If IDP performance is low, this rule can be disabled to improve performance at the cost of security.  Alternatively, you may remove the lower-severity groups from your policy for a small increase in performance, with a lower cost of security impact. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Misc_HTTP - Critical" "[Recommended]Misc_HTTP - Major" "[Recommended]Misc_HTTP - Minor" "[Recommended]Misc_HTTP - Warning" "[Recommended]Misc_HTTP - Info" "[Recommended]Misc_SSL - Critical" "[Recommended]Misc_SSL - Major" "[Recommended]Misc_SSL - Minor" "[Recommended]Misc_SSL - Warning" "[Recommended]Misc_SSL - Info" "[Recommended]Misc_DNS - Critical" "[Recommended]Misc_DNS - Major" "[Recommended]Misc_DNS - Minor" "[Recommended]Misc_DNS - Warning" "[Recommended]Misc_DNS - Info" 
+                            "[Recommended]Misc_FTP - Critical" "[Recommended]Misc_FTP - Major" "[Recommended]Misc_FTP - Minor" "[Recommended]Misc_FTP - Warning" "[Recommended]Misc_FTP - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Mail-Services {
+                    /* This rule is designed to protect your clients against common mail attacks. If you experience low IDP performance, you may remove the lower-severity groups from your policy for a small increase in performance, at the cost of security. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_IMAP - Critical" "[Recommended]Response_IMAP - Major" "[Recommended]Response_IMAP - Minor" "[Recommended]Response_IMAP - Warning" "[Recommended]Response_IMAP - Info" "[Recommended]Response_POP3 - Critical" "[Recommended]Response_POP3 - Major" "[Recommended]Response_POP3 - Minor" "[Recommended]Response_POP3 - Warning" "[Recommended]Response_POP3 - Info" "[Recommended]Response_SMTP - Critical" "[Recommended]Response_SMTP - Major" "[Recommended]Response_SMTP - Minor" 
+                            "[Recommended]Response_SMTP - Warning" "[Recommended]Response_SMTP - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Internal-Services {
+                    /* This rule is designed to protect your clients against common internal attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_SMB" "[Recommended]Response_MS-RPC" "[Recommended]Response_LDAP" "[Recommended]Response_NETBIOS" "[Recommended]Response_RADIUS" "[Recommended]Response_SSH" "[Recommended]Response_TELNET" "[Recommended]Response_DB" "[Recommended]Response_VNC" "[Recommended]Response_NFS" "[Recommended]Response_NTP" "[Recommended]Response_PORTMAPPER" "[Recommended]Response_DHCP" "[Recommended]Response_RPC" "[Recommended]Response_SNMP" "[Recommended]Response_SNMPTRAP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Malicious-Activity {
+                    /* This rule is designed to protect your clients against common malware attacks and other malicious activity.  This is a very important rule and should be kept enabled. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_SPYWARE" "[Recommended]Misc_SPYWARE" "[Recommended]Response_TROJAN" "[Recommended]Misc_TROJAN" "[Recommended]Response_VIRUS" "[Recommended]Misc_VIRUS" "[Recommended]Response_WORM" "[Recommended]Misc_WORM" "[Recommended]Response_SHELLCODE" "[Recommended]Misc_SHELLCODE" "[Recommended]Response_SCAN" "[Recommended]Misc_SCAN" "[Recommended]Response_DOS" "[Recommended]Misc_DOS" "[Recommended]Response_DDOS" "[Recommended]Misc_DDOS" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Other-Activity {
+                    /* This rule is designed to protect your clients against other common attacks.  This rule is useful if your organization is concerned about chat, P2P, and similar activity.  If not, this rule can be disabled or removed from your policy for a minor increase in performance. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_VOIP" "[Recommended]Response_CHAT" "[Recommended]Response_P2P" "[Recommended]Response_APP" "[Recommended]Response_RTSP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Transport-Services {
+                    /* This rule is designed to protect your clients against common transport attacks.  Triggers against this rule could indicate an attacker is attempting to evade your IDP.  Unusual network configurations can also sometimes trigger attacks in this rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_IP" "[Recommended]Response_TCP" "[Recommended]Response_UDP" "[Recommended]Response_ICMP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy Client-Protection-1G {
+            /* This template policy is designed to protect clients.  This template is supported on all platforms, including Branch devices with 1G of memory. */
+            rulebase-ips {
+                rule Web-Services-Essential {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes Critical and Major severities.  This is an essential rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_HTTP - Critical" "[Recommended]Response_HTTP - Major" "[Recommended]Response_SSL - Critical" "[Recommended]Response_SSL - Major" "[Recommended]Response_DNS - Critical" "[Recommended]Response_DNS - Major" "[Recommended]Response_FTP - Critical" "[Recommended]Response_FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Web-Services-Low-Performance {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes performance-impacting signatures.  If IDP performance is low, this rule can be disabled to improve performance at the cost of security.  Alternatively, you may remove the lower-severity groups from your policy for a small increase in performance, with a lower cost of security impact. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Misc_HTTP - Critical" "[Recommended]Misc_HTTP - Major" "[Recommended]Misc_SSL - Critical" "[Recommended]Misc_SSL - Major" "[Recommended]Misc_DNS - Critical" "[Recommended]Misc_DNS - Major" "[Recommended]Misc_FTP - Critical" "[Recommended]Misc_FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Mail-Services {
+                    /* This rule is designed to protect your clients against common mail attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_IMAP - Critical" "[Recommended]Response_IMAP - Major" "[Recommended]Response_POP3 - Critical" "[Recommended]Response_POP3 - Major" "[Recommended]Response_SMTP - Critical" "[Recommended]Response_SMTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Internal-Services {
+                    /* This rule is designed to protect your clients against common internal attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_SMB - Critical" "[Recommended]Response_SMB - Major" "[Recommended]Response_MS-RPC - Critical" "[Recommended]Response_MS-RPC - Major" "[Recommended]Response_NETBIOS - Critical" "[Recommended]Response_NETBIOS - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Malicious-Activity {
+                    /* This rule is designed to protect your clients against common malware attacks and other malicious activity.  This is a very important rule and should be kept enabled. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_SPYWARE - Critical" "[Recommended]Misc_SPYWARE - Critical" "[Recommended]Response_SPYWARE - Major" "[Recommended]Misc_SPYWARE - Major" "[Recommended]Response_TROJAN - Critical" "[Recommended]Misc_TROJAN - Critical" "[Recommended]Response_TROJAN - Major" "[Recommended]Misc_TROJAN - Major" "[Recommended]Response_VIRUS - Critical" "[Recommended]Misc_VIRUS - Critical" "[Recommended]Response_VIRUS - Major" "[Recommended]Misc_VIRUS - Major" "[Recommended]Response_WORM - Critical" 
+                            "[Recommended]Misc_WORM - Critical" "[Recommended]Response_WORM - Major" "[Recommended]Misc_WORM - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Transport-Services {
+                    /* This rule is designed to protect your clients against common transport attacks.  Triggers against this rule could indicate an attacker is attempting to evade your IDP.  Unusual network configurations can also sometimes trigger attacks in this rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Response_IP" "[Recommended]Response_TCP" "[Recommended]Response_UDP" "[Recommended]Response_ICMP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy Client-And-Server-Protection {
+            /* This template policy is designed to protect both clients and servers.  It is supported on devices with 2G or more of memory.  Branch devices with only 1G are not supported. */
+            rulebase-ips {
+                rule Web-Services-Essential {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes Critical and Major severities.  This is an essential rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]HTTP - Critical" "[Recommended]Response_HTTP - Critical" "[Recommended]HTTP - Major" "[Recommended]Response_HTTP - Major" "[Recommended]SSL - Critical" "[Recommended]Response_SSL - Critical" "[Recommended]SSL - Major" "[Recommended]Response_SSL - Major" "[Recommended]DNS - Critical" "[Recommended]Response_DNS - Critical" "[Recommended]DNS - Major" "[Recommended]Response_DNS - Major" "[Recommended]FTP - Critical" "[Recommended]Response_FTP - Critical" "[Recommended]FTP - Major" 
+                            "[Recommended]Response_FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Web-Services-Supplemental {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes Minor, Warning, and Info severities.  If IDP performance is low, this rule can be disabled to improve performance at the cost of security.  Alternatively, you may remove the lower-severity groups from your policy for a small increase in performance, with a lower cost of security impact. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]HTTP - Minor" "[Recommended]Response_HTTP - Minor" "[Recommended]HTTP - Warning" "[Recommended]Response_HTTP - Warning" "[Recommended]HTTP - Info" "[Recommended]Response_HTTP - Info" "[Recommended]SSL - Minor" "[Recommended]Response_SSL - Minor" "[Recommended]SSL - Warning" "[Recommended]Response_SSL - Warning" "[Recommended]SSL - Info" "[Recommended]Response_SSL - Info" "[Recommended]DNS - Minor" "[Recommended]Response_DNS - Minor" "[Recommended]DNS - Warning" "[Recommended]Response_DNS - Warning" 
+                            "[Recommended]DNS - Info" "[Recommended]Response_DNS - Info" "[Recommended]FTP - Minor" "[Recommended]Response_FTP - Minor" "[Recommended]FTP - Warning" "[Recommended]Response_FTP - Warning" "[Recommended]FTP - Info" "[Recommended]Response_FTP - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Web-Services-Low-Performance {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes performance-impacting signatures.  If IDP performance is low, this rule can be disabled to improve performance at the cost of security.  Alternatively, you may remove the lower-severity groups from your policy for a small increase in performance, with a lower cost of security impact. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Misc_HTTP - Critical" "[Recommended]Misc_HTTP - Major" "[Recommended]Misc_HTTP - Minor" "[Recommended]Misc_HTTP - Warning" "[Recommended]Misc_HTTP - Info" "[Recommended]Misc_SSL - Critical" "[Recommended]Misc_SSL - Major" "[Recommended]Misc_SSL - Minor" "[Recommended]Misc_SSL - Warning" "[Recommended]Misc_SSL - Info" "[Recommended]Misc_DNS - Critical" "[Recommended]Misc_DNS - Major" "[Recommended]Misc_DNS - Minor" "[Recommended]Misc_DNS - Warning" "[Recommended]Misc_DNS - Info" 
+                            "[Recommended]Misc_FTP - Critical" "[Recommended]Misc_FTP - Major" "[Recommended]Misc_FTP - Minor" "[Recommended]Misc_FTP - Warning" "[Recommended]Misc_FTP - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Mail-Services {
+                    /* This rule is designed to protect your clients against common mail attacks. If you experience low IDP performance, you may remove the lower-severity groups from your policy for a small increase in performance, at the cost of security. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IMAP - Critical" "[Recommended]Response_IMAP - Critical" "[Recommended]IMAP - Major" "[Recommended]Response_IMAP - Major" "[Recommended]IMAP - Minor" "[Recommended]Response_IMAP - Minor" "[Recommended]IMAP - Warning" "[Recommended]Response_IMAP - Warning" "[Recommended]IMAP - Info" "[Recommended]Response_IMAP - Info" "[Recommended]POP3 - Critical" "[Recommended]Response_POP3 - Critical" "[Recommended]POP3 - Major" "[Recommended]Response_POP3 - Major" "[Recommended]POP3 - Minor" 
+                            "[Recommended]Response_POP3 - Minor" "[Recommended]POP3 - Warning" "[Recommended]Response_POP3 - Warning" "[Recommended]POP3 - Info" "[Recommended]Response_POP3 - Info" "[Recommended]SMTP - Critical" "[Recommended]Response_SMTP - Critical" "[Recommended]SMTP - Major" "[Recommended]Response_SMTP - Major" "[Recommended]SMTP - Minor" "[Recommended]Response_SMTP - Minor" "[Recommended]SMTP - Warning" "[Recommended]Response_SMTP - Warning" "[Recommended]SMTP - Info" "[Recommended]Response_SMTP - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Internal-Services {
+                    /* This rule is designed to protect your clients against common internal attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SMB" "[Recommended]Response_SMB" "[Recommended]MS-RPC" "[Recommended]Response_MS-RPC" "[Recommended]LDAP" "[Recommended]Response_LDAP" "[Recommended]NETBIOS" "[Recommended]Response_NETBIOS" "[Recommended]RADIUS" "[Recommended]Response_RADIUS" "[Recommended]SSH" "[Recommended]Response_SSH" "[Recommended]TELNET" "[Recommended]Response_TELNET" "[Recommended]DB" "[Recommended]Response_DB" "[Recommended]VNC" "[Recommended]Response_VNC" "[Recommended]NFS" "[Recommended]Response_NFS" 
+                            "[Recommended]NTP" "[Recommended]Response_NTP" "[Recommended]PORTMAPPER" "[Recommended]Response_PORTMAPPER" "[Recommended]DHCP" "[Recommended]Response_DHCP" "[Recommended]RPC" "[Recommended]Response_RPC" "[Recommended]SNMP" "[Recommended]Response_SNMP" "[Recommended]SNMPTRAP" "[Recommended]Response_SNMPTRAP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Malicious-Activity {
+                    /* This rule is designed to protect your clients against common malware attacks and other malicious activity.  This is a very important rule and should be kept enabled. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SPYWARE" "[Recommended]Response_SPYWARE" "[Recommended]Misc_SPYWARE" "[Recommended]TROJAN" "[Recommended]Response_TROJAN" "[Recommended]Misc_TROJAN" "[Recommended]VIRUS" "[Recommended]Response_VIRUS" "[Recommended]Misc_VIRUS" "[Recommended]WORM" "[Recommended]Misc_WORM" "[Recommended]Response_WORM" "[Recommended]SHELLCODE" "[Recommended]Response_SHELLCODE" "[Recommended]Misc_SHELLCODE" "[Recommended]SCAN" "[Recommended]Response_SCAN" "[Recommended]Misc_SCAN" "[Recommended]DOS" 
+                            "[Recommended]Response_DOS" "[Recommended]Misc_DOS" "[Recommended]DDOS" "[Recommended]Response_DDOS" "[Recommended]Misc_DDOS" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Other-Activity {
+                    /* This rule is designed to protect your clients against other common attacks.  This rule is useful if your organization is concerned about chat, P2P, and similar activity.  If not, this rule can be disabled or removed from your policy for a minor increase in performance. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]VOIP" "[Recommended]Response_VOIP" "[Recommended]CHAT" "[Recommended]Response_CHAT" "[Recommended]P2P" "[Recommended]Response_P2P" "[Recommended]APP" "[Recommended]Response_APP" "[Recommended]RTSP" "[Recommended]Response_RTSP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                    }
+                }
+                rule Transport-Services {
+                    /* This rule is designed to protect your clients against common transport attacks.  Triggers against this rule could indicate an attacker is attempting to evade your IDP.  Unusual network configurations can also sometimes trigger attacks in this rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IP" "[Recommended]Response_IP" "[Recommended]TCP" "[Recommended]Response_TCP" "[Recommended]UDP" "[Recommended]Response_UDP" "[Recommended]ICMP" "[Recommended]Response_ICMP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy Client-And-Server-Protection-1G {
+            /* This template policy is designed to protect both clients and servers.  This template is supported on all platforms, including Branch devices with 1G of memory. */
+            rulebase-ips {
+                rule Web-Services-Essential {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes Critical and Major severities.  This is an essential rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]HTTP - Critical" "[Recommended]Response_HTTP - Critical" "[Recommended]HTTP - Major" "[Recommended]Response_HTTP - Major" "[Recommended]SSL - Critical" "[Recommended]Response_SSL - Critical" "[Recommended]SSL - Major" "[Recommended]Response_SSL - Major" "[Recommended]DNS - Critical" "[Recommended]Response_DNS - Critical" "[Recommended]DNS - Major" "[Recommended]Response_DNS - Major" "[Recommended]FTP - Critical" "[Recommended]Response_FTP - Critical" "[Recommended]FTP - Major" 
+                            "[Recommended]Response_FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Web-Services-Low-Performance {
+                    /* This rule is designed to protect your clients against common internet attacks.  It includes performance-impacting signatures.  If IDP performance is low, this rule can be disabled to improve performance at the cost of security.  Alternatively, you may remove the lower-severity groups from your policy for a small increase in performance, with a lower cost of security impact. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]Misc_HTTP - Critical" "[Recommended]Misc_HTTP - Major" "[Recommended]Misc_SSL - Critical" "[Recommended]Misc_SSL - Major" "[Recommended]Misc_DNS - Critical" "[Recommended]Misc_DNS - Major" "[Recommended]Misc_FTP - Critical" "[Recommended]Misc_FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Mail-Services {
+                    /* This rule is designed to protect your clients against common mail attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IMAP - Critical" "[Recommended]Response_IMAP - Critical" "[Recommended]IMAP - Major" "[Recommended]Response_IMAP - Major" "[Recommended]POP3 - Critical" "[Recommended]Response_POP3 - Critical" "[Recommended]POP3 - Major" "[Recommended]Response_POP3 - Major" "[Recommended]SMTP - Critical" "[Recommended]Response_SMTP - Critical" "[Recommended]SMTP - Major" "[Recommended]Response_SMTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Internal-Services {
+                    /* This rule is designed to protect your clients against common internal attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SMB - Critical" "[Recommended]Response_SMB - Critical" "[Recommended]SMB - Major" "[Recommended]Response_SMB - Major" "[Recommended]MS-RPC - Critical" "[Recommended]Response_MS-RPC - Critical" "[Recommended]MS-RPC - Major" "[Recommended]Response_MS-RPC - Major" "[Recommended]NETBIOS - Critical" "[Recommended]Response_NETBIOS - Critical" "[Recommended]NETBIOS - Major" "[Recommended]Response_NETBIOS - Major" "[Recommended]SSH - Critical" "[Recommended]Response_SSH - Critical" 
+                            "[Recommended]SSH - Major" "[Recommended]Response_SSH - Major" "[Recommended]DB - Critical" "[Recommended]Response_DB - Critical" "[Recommended]DB - Major" "[Recommended]Response_DB - Major" "[Recommended]NTP - Critical" "[Recommended]Response_NTP - Critical" "[Recommended]NTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Malicious-Activity {
+                    /* This rule is designed to protect your clients against common malware attacks and other malicious activity.  This is a very important rule and should be kept enabled. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SPYWARE - Critical" "[Recommended]Response_SPYWARE - Critical" "[Recommended]Misc_SPYWARE - Critical" "[Recommended]SPYWARE - Major" "[Recommended]Response_SPYWARE - Major" "[Recommended]Misc_SPYWARE - Major" "[Recommended]TROJAN - Critical" "[Recommended]Response_TROJAN - Critical" "[Recommended]Misc_TROJAN - Critical" "[Recommended]TROJAN - Major" "[Recommended]Response_TROJAN - Major" "[Recommended]Misc_TROJAN - Major" "[Recommended]VIRUS - Critical" "[Recommended]Response_VIRUS - Critical" 
+                            "[Recommended]Misc_VIRUS - Critical" "[Recommended]VIRUS - Major" "[Recommended]Response_VIRUS - Major" "[Recommended]Misc_VIRUS - Major" "[Recommended]WORM - Critical" "[Recommended]Misc_WORM - Critical" "[Recommended]Response_WORM - Critical" "[Recommended]WORM - Major" "[Recommended]Misc_WORM - Major" "[Recommended]Response_WORM - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Transport-Services {
+                    /* This rule is designed to protect your clients against common transport attacks.  Triggers against this rule could indicate an attacker is attempting to evade your IDP.  Unusual network configurations can also sometimes trigger attacks in this rule. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IP" "[Recommended]Response_IP" "[Recommended]TCP" "[Recommended]Response_TCP" "[Recommended]UDP" "[Recommended]Response_UDP" "[Recommended]ICMP" "[Recommended]Response_ICMP" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy Recommended-copy {
+            rulebase-ips {
+                rule TCP/IP {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IP - Critical" "[Recommended]IP - Minor" "[Recommended]IP - Major" "[Recommended]TCP - Critical" "[Recommended]TCP - Minor" "[Recommended]TCP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule ICMP {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]ICMP - Major" "[Recommended]ICMP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule HTTP {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]HTTP - Critical" "[Recommended]HTTP - Major" "[Recommended]HTTP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule SMTP {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SMTP - Critical" "[Recommended]SMTP - Major" "[Recommended]SMTP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule DNS {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]DNS - Critical" "[Recommended]DNS - Minor" "[Recommended]DNS - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule FTP {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]FTP - Critical" "[Recommended]FTP - Minor" "[Recommended]FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule POP3 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]POP3 - Critical" "[Recommended]POP3 - Minor" "[Recommended]POP3 - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule IMAP {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IMAP - Critical" "[Recommended]IMAP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Malware {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]TROJAN - Critical" "[Recommended]TROJAN - Major" "[Recommended]TROJAN - Minor" "[Recommended]VIRUS - Critical" "[Recommended]VIRUS - Major" "[Recommended]VIRUS - Minor" "[Recommended]WORM - Critical" "[Recommended]WORM - Major" "[Recommended]WORM - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy Web_Server {
+            /* This template policy is designed to protect commonly used HTTP servers from remote attacks. */
+            rulebase-ips {
+                rule 1 {
+                    /* This rule drops all packets that should not occur on a clean network, and can be used by attackers to evade IDSs. This rule is necessary to harden the IDP against evasion attempts. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "IP - Major" "IP - Critical" "TCP - Critical" "TCP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 2 {
+                    /* This rule drops all DNS  and DHCP packets that contain critical severity attacks and logs them as alarms. Enable this rule if you are running your IDP in "in-line" mode, and wish to protect your network against critical DNS and DHCP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "DNS - Critical" "DNS - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 3 {
+                    /* This rule drops critical and high severity attacks against common web and IIS services and logs them as alarms. Enable this rule if you are running your IDP in "in-line" mode, and wish to protect your network against critical and high severity attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "FINGER - Critical" "FINGER - Major" "GOPHER - Critical" "GOPHER - Major" "FTP - Critical" "FTP - Major" "HTTP - Critical" "HTTP - Major" "SHELLCODE - Major" "SHELLCODE - Critical" "NNTP - Critical" "NNTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 4 {
+                    /* This rule logs medium severity attacks.  Enable this rule if you are running your IDP in "in-line" mode, and wish to monitor your network for attacks and IDS evasion attempts. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "DNS - Minor" "FINGER - Minor" "FTP - Minor" "GOPHER - Minor" "HTTP - Minor" "NNTP - Minor" "SHELLCODE - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 5 {
+                    /* This rule logs low severity attacks.  The rule is disabled by default, as some networks contain many low severity events, which results in many logs. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Warning" "Signature - Warning" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 6 {
+                    /* This rule logs informational events.  This rule is disabled by default as it generates many logs.  Informational signatures are included not to necessarily detect attacks, but to provide additional understanding of your network's traffic. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Info" "Signature - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy DMZ_Services {
+            /* This template policy is designed to be used to protect a typical DMZ environment. */
+            rulebase-ips {
+                rule 1 {
+                    /* This rule drops all packets that should not occur on a clean network, and can be used by attackers to evade IDSs.  This rule is necessary to harden the IDP against evasion attempts. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "IP - Major" "IP - Critical" "TCP - Critical" "TCP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 2 {
+                    /* This rule drops all DNS  and DHCP packets that contain critical severity attacks and logs them as alarms.  Enable this rule if you are running your IDP in \"in-line\" mode, and wish to protect your network against critical DNS and DHCP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "DNS - Critical" "DNS - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 3 {
+                    /* This rule drops critical and high severity attacks against common DMZ services and logs them as alarms. Enable this rule if you are running your IDP in \"in-line\" mode, and wish to protect your network against critical and high severity attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "FINGER - Critical" "FINGER - Major" "GOPHER - Critical" "GOPHER - Major" "FTP - Critical" "FTP - Major" "HTTP - Critical" "HTTP - Major" "SHELLCODE - Major" "SHELLCODE - Critical" "NNTP - Critical" "NNTP - Major" "IMAP - Critical" "IMAP - Major" "POP3 - Critical" "POP3 - Major" "SMTP - Critical" "SMTP - Major" "SSH - Critical" "SSH - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 4 {
+                    /* This rule logs medium severity attacks.  Enable this rule if you are running your IDP in "in-line" mode, and wish to monitor your network for attacks and IDS evasion attempts. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "FINGER - Minor" "FTP - Minor" "GOPHER - Minor" "HTTP - Minor" "IMAP - Minor" "NNTP - Minor" "POP3 - Minor" "SHELLCODE - Minor" "SMTP - Minor" "SSH - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 5 {
+                    /* This rule logs low severity attacks.  The rule is disabled by default, as some networks contain many low severity events, which results in many logs. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Warning" "Signature - Warning" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 6 {
+                    /* This rule logs informational events.  This rule is disabled by default as it generates many logs.  Informational signatures are included not to necessarily detect attacks, but to provide additional understanding of your network's traffic. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Info" "Signature - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy DNS_Service {
+            /* This template policy is designed to protect DNS services. Use this template as a starting point to customize your desired level of protection. */
+            rulebase-ips {
+                rule 1 {
+                    /* This rule drops all packets that should not occur on a clean network, and can be used by attackers to evade IDSs.  This rule is necessary to harden the IDP against evasion attempts. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "IP - Major" "IP - Critical" "TCP - Critical" "TCP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 2 {
+                    /* This rule drops all DNS  and DHCP packets that contain critical severity attacks and logs them as alarms.  Enable this rule if you are running your IDP in "in-line" mode, and wish to protect your network against critical DNS and DHCP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "DNS - Critical" "DNS - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 3 {
+                    /* This rule logs medium severity DNS attacks. Enable this rule to investigate possible threats against Domain Name Services. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups "DNS - Minor";
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 4 {
+                    /* This rule logs low severity attacks.  The rule is disabled by default, as some networks contain many low severity events, which results in many logs. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Warning" "Signature - Warning" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 5 {
+                    /* This rule logs informational events.  This rule is disabled by default as it generates many logs.  Informational signatures are included not to necessarily detect attacks, but to provide additional understanding of your network's traffic. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Info" "Signature - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy File_Server {
+            /* This template policy is designed to provide protection to various file sharing services such as AMB, NFS, FTP, and others. */
+            rulebase-ips {
+                rule 1 {
+                    /* This rule drops all packets that should not occur on a clean network, and can be used by attackers to evade IDSs.  This rule is necessary to harden the IDP against evasion attempts. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "IP - Major" "IP - Critical" "TCP - Critical" "TCP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 2 {
+                    /* This rule drops all DNS  and DHCP packets that contain critical severity attacks and logs them as alarms.  Enable this rule if you are running your IDP in \"in-line\" mode, and wish to protect your network against critical DNS and DHCP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "DNS - Critical" "DNS - Major" "DHCP - Critical" "DHCP - Major" "SHELLCODE - Critical" "SHELLCODE - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 3 {
+                    /* This rule drops critical and high severity attacks against common DMZ services and logs them as alarms. Enable this rule if you are running your IDP in "in-line" mode, and wish to protect your network against critical and high severity attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "FTP - Critical" "FTP - Major" "SSH - Critical" "SSH - Major" "NFS - Critical" "NFS - Major" "PORTMAPPER - Critical" "PORTMAPPER - Major" "RPC - Critical" "RPC - Major" "SMB - Critical" "SMB - Major" "MS-RPC - Critical" "MS-RPC - Major" "NETBIOS - Critical" "NETBIOS - Major" "TFTP - Critical" "TFTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 4 {
+                    /* This rule logs medium severity file service attacks. Enable this rule to investigate possible threats against file sharing services. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "FTP - Minor" "SSH - Minor" "MS-RPC - Minor" "NETBIOS - Minor" "NFS - Minor" "PORTMAPPER - Minor" "RPC - Minor" "SMB - Minor" "TFTP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 5 {
+                    /* This rule logs low severity attacks.  The rule is disabled by default, as some networks contain many low severity events, which results in many logs. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Warning" "Signature - Warning" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 6 {
+                    /* This rule logs informational events.  This rule is disabled by default as it generates many logs.  Informational signatures are included not to necessarily detect attacks, but to provide additional understanding of your network's traffic. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Info" "Signature - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy Getting_Started {
+            /* This template is a good starting point for learning how to create IDP policies. */
+            rulebase-ips {
+                rule 1 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "IP - Major" "IP - Critical" "IP - Minor" "TCP - Critical" "TCP - Major" "TCP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 2 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "ICMP - Critical" "ICMP - Major" "ICMP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 3 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "HTTP - Critical" "HTTP - Major" "HTTP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 4 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "SMTP - Critical" "SMTP - Major" "SMTP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 5 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "DNS - Critical" "DNS - Major" "DNS - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 6 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "FTP - Critical" "FTP - Major" "FTP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 7 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "POP3 - Critical" "POP3 - Major" "POP3 - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 8 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "IMAP - Critical" "IMAP - Major" "IMAP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule 9 {
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "TROJAN - Critical" "TROJAN - Major" "TROJAN - Minor" "VIRUS - Critical" "VIRUS - Major" "VIRUS - Minor" "WORM - Critical" "WORM - Major" "WORM - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy IDP_Default {
+            /* This template policy represents a good blend od security and performance. Use this template for "in-line" mode. */
+            rulebase-ips {
+                rule 1 {
+                    /* This rule drops all packets that should not occur on a clean network, and can be used by attackers to evade IDSs.  This rule is necessary to harden the IDP against evasion attempts. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "IP - Major" "IP - Critical" "TCP - Critical" "TCP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 2 {
+                    /* This rule drops high severity attacks and logs them as alarms. Enable this rule if you are running your IDP in "in-line" mode, and wish to protect your network against critical attacks and IDS evasion attempts. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "DB - Critical" "DB - Major" "DDOS - Critical" "DDOS - Major" "DHCP - Critical" "DHCP - Major" "DNS - Critical" "DNS - Major" "DOS - Critical" "DOS - Major" "FTP - Critical" "FTP - Major" "HTTP - Critical" "HTTP - Major" "ICMP - Critical" "ICMP - Major" "IMAP - Critical" "IMAP - Major" "NETBIOS - Critical" "NETBIOS - Major" "MS-RPC - Critical" "MS-RPC - Major" "NFS - Critical" "NFS - Major" "POP3 - Critical" "POP3 - Major" "PORTMAPPER - Critical" "PORTMAPPER - Major" "RPC - Critical" 
+                            "RPC - Major" "SCAN - Critical" "SCAN - Major" "SHELLCODE - Critical" "SHELLCODE - Major" "SMB - Critical" "SMB - Major" "SMTP - Critical" "SMTP - Major" "SSH - Critical" "SSH - Major" "TELNET - Critical" "TELNET - Major" "TROJAN - Critical" "TROJAN - Major" "WORM - Critical" "WORM - Major" "APP - Critical" "APP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            drop-packet;
+                        }
+                        notification {
+                            log-attacks {
+                                alert;
+                            }
+                        }
+                    }
+                }
+                rule 3 {
+                    /* This rule logs medium severity attacks.  Enable this rule if you are running your IDP in "in-line" mode, and wish to monitor your network for attacks and IDS evasion attempts. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "DB - Minor" "DDOS - Minor" "DHCP - Minor" "DNS - Minor" "DOS - Minor" "FTP - Minor" "HTTP - Minor" "ICMP - Minor" "IMAP - Minor" "NETBIOS - Minor" "MS-RPC - Minor" "NFS - Minor" "POP3 - Minor" "PORTMAPPER - Minor" "RPC - Minor" "SCAN - Minor" "SHELLCODE - Minor" "SMB - Minor" "SMTP - Minor" "SSH - Minor" "TELNET - Minor" "TROJAN - Minor" "WORM - Minor" "APP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 4 {
+                    /* This rule logs low severity attacks.  The rule is disabled by default, as some networks contain many low severity events, which results in many logs. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Warning" "Signature - Warning" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                inactive: rule 5 {
+                    /* This rule logs informational events.  This rule is disabled by default as it generates many logs.  Informational signatures are included not to necessarily detect attacks, but to provide additional understanding of your network's traffic. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "Anomaly - Info" "Signature - Info" ];
+                        }
+                    }
+                    then {
+                        action {
+                            no-action;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        idp-policy Recommended {
+            /* This legacy template policy covers most current vulnerabilities.  This template is supported on all platforms, including Branch devices with 1G of memory. */
+            rulebase-ips {
+                rule TCP/IP {
+                    /* This rule is designed to protect your networks against important TCP/IP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IP - Critical" "[Recommended]IP - Minor" "[Recommended]IP - Major" "[Recommended]TCP - Critical" "[Recommended]TCP - Minor" "[Recommended]TCP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule ICMP {
+                    /* This rule is designed to protect your network against  important ICMP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]ICMP - Major" "[Recommended]ICMP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule HTTP {
+                    /* This rule is designed to protect your network against  important HTTP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]HTTP - Critical" "[Recommended]HTTP - Major" "[Recommended]HTTP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule SMTP {
+                    /* This rule is designed to protect your network against  important SMTP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]SMTP - Critical" "[Recommended]SMTP - Major" "[Recommended]SMTP - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule DNS {
+                    /* This rule is designed to protect your network against important DNS attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]DNS - Critical" "[Recommended]DNS - Minor" "[Recommended]DNS - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule FTP {
+                    /* This rule is designed to protect your network against important FTP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]FTP - Critical" "[Recommended]FTP - Minor" "[Recommended]FTP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule POP3 {
+                    /* This rule is designed to protect your network against important POP3 attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]POP3 - Critical" "[Recommended]POP3 - Minor" "[Recommended]POP3 - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule IMAP {
+                    /* This rule is designed to protect your network against important IMAP attacks. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]IMAP - Critical" "[Recommended]IMAP - Major" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+                rule Malware {
+                    /* This rule is designed to protect your network against common internet malware. */
+                    match {
+                        from-zone any;
+                        source-address any;
+                        to-zone any;
+                        destination-address any;
+                        application default;
+                        attacks {
+                            predefined-attack-groups [ "[Recommended]TROJAN - Critical" "[Recommended]TROJAN - Major" "[Recommended]TROJAN - Minor" "[Recommended]VIRUS - Critical" "[Recommended]VIRUS - Major" "[Recommended]VIRUS - Minor" "[Recommended]WORM - Critical" "[Recommended]WORM - Major" "[Recommended]WORM - Minor" ];
+                        }
+                    }
+                    then {
+                        action {
+                            recommended;
+                        }
+                        notification {
+                            log-attacks;
+                        }
+                    }
+                }
+            }
+        }
+        active-policy Recommended-copy;
+        security-package {
+            automatic {
+                interval 48;
+                enable;
+            }
+        }
+    }
+}
